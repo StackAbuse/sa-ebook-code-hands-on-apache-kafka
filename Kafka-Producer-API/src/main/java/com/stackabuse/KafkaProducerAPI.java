@@ -31,9 +31,6 @@ public class KafkaProducerAPI {
         //Install interceptor list - config "interceptor.classes"
         props.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, NotificationProducerInterceptor.class.getName());
 
-//        props.put("importantNotifications", "IBM,UBER");
-//        props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, NotificationPartitioner.class.getName());
-
         return new KafkaProducer<>(props);
     }
 
@@ -85,7 +82,7 @@ public class KafkaProducerAPI {
         final ExecutorService executorService =
                 Executors.newFixedThreadPool(notificationSenders.size() + 1);
 
-        //Run Metrics Producer Reporter which is runnable passing it the producer.
+        //Run Metrics Generator which is runnable passing to the producer.
         executorService.submit(new MetricsGenerator(producer));
 
         //Run each notification sender in its own thread.
@@ -97,12 +94,13 @@ public class KafkaProducerAPI {
             executorService.shutdown();
             try {
                 executorService.awaitTermination(200, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                logger.warn("shutting down", e);
+            } finally {
                 logger.info("Flushing and closing producer");
                 logger.info("========================================================================================");
                 producer.flush();
                 producer.close();
-            } catch (InterruptedException e) {
-                logger.warn("shutting down", e);
             }
         }));
     }
