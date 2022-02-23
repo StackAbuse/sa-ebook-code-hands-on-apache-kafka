@@ -60,7 +60,7 @@ public class KafkaProducerAPI {
 
     private static void setupBatchingAndCompression(final Properties props) {
         //Linger up to 100 ms before sending batch if size not met
-        props.put(ProducerConfig.LINGER_MS_CONFIG, 100);
+        props.put(ProducerConfig.LINGER_MS_CONFIG, 500);
 
         //Batch up to 64K buffer sizes.
         props.put(ProducerConfig.BATCH_SIZE_CONFIG,  16_384 * 4);
@@ -69,7 +69,7 @@ public class KafkaProducerAPI {
         props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         logger.info("========================================================================================");
         logger.info("Starting Kafka Producer Process");
         //Create Kafka Producer

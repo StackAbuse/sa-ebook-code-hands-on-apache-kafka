@@ -12,10 +12,9 @@ import java.util.*;
 
 public class MetricsGenerator implements Runnable {
     private final Producer<String, Notification> producer;
-    private final Logger logger =
-            LoggerFactory.getLogger(MetricsGenerator.class);
+    private final Logger logger = LoggerFactory.getLogger(MetricsGenerator.class);
 
-    // Filter just the metrics we require
+    // Filter only the metrics that we require
     private final Set<String> metricsNameFilter = new HashSet<>(Arrays.asList(
             "record-queue-time-avg", "record-send-rate", "records-per-request-avg",
             "request-size-max", "network-io-rate", "record-queue-time-avg",

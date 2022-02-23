@@ -43,7 +43,7 @@ public class NotificationSender implements Runnable {
             sentCount++;
 
             try {
-                final ProducerRecord<String, Notification> record = createRandomRecord(random);
+                final ProducerRecord<String, Notification> record = createRandomRecord();
                 final int delay = randomIntBetween(random, delayMaxMs, delayMinMs);
                 logger.info("Sending record: {}", record);
                 final Future<RecordMetadata> future = producer.send(record);
@@ -84,7 +84,7 @@ public class NotificationSender implements Runnable {
         return random.nextInt(max - min + 1) + min;
     }
 
-    private ProducerRecord<String, Notification> createRandomRecord(final Random random)
+    private ProducerRecord<String, Notification> createRandomRecord()
             throws ParseException, JsonProcessingException {
         Faker faker = new Faker();
         String orderId = faker.idNumber().valid();

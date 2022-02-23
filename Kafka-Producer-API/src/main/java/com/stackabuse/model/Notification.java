@@ -49,7 +49,7 @@ public class Notification {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (Objects.isNull(o) || getClass() != o.getClass()) return false;
         Notification that = (Notification) o;
         return Objects.equals(orderId, that.orderId)
                 && Objects.equals(userId, that.userId)
