@@ -30,6 +30,12 @@ public class KafkaConsumerAPI {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, NotificationDeserializer.class.getName());
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 100);
 
+        //Auto commit config
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
+        props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "5000");
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
+
         // Create the consumer using props.
         final Consumer<String, Notification> consumer = new KafkaConsumer<>(props);
 
@@ -37,7 +43,6 @@ public class KafkaConsumerAPI {
         consumer.subscribe(Collections.singletonList(ApplicationConstants.TOPIC));
         return consumer;
     }
-
 
     static void runConsumer() {
         try (Consumer<String, Notification> consumer = createConsumer()) {
