@@ -16,6 +16,7 @@
         <module>Kafka-Consumer-API</module>
         <module>Kafka-Streams-API</module>
         <module>Kafka-Connect-API</module>
+        <module>Kafka-Spring-Boot</module>
     </modules>
 
 </project>
