@@ -5,7 +5,7 @@ spring:
     consumer:
       bootstrap-servers: localhost:9092
       topic: product-inventory
-      forward-to: fullfilment-station
+      forward-to: fulfillment-station
       group-id: group-id
       auto-start: true
       auto-offset-reset: earliest

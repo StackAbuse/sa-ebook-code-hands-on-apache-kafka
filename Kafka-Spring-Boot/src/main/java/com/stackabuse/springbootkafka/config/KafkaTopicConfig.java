@@ -44,7 +44,7 @@ public class KafkaTopicConfig {
                TopicBuilder.name("product-inventory-bytes")
                        .replicas(1)
                        .build(),
-               TopicBuilder.name("fullfilment-station")
+               TopicBuilder.name("fulfillment-station")
                        .partitions(5)
                        .build()
         );
