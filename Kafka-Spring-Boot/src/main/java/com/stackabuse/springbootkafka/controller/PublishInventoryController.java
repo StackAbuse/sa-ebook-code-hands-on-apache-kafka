@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ public class PublishInventoryController {
     private KafkaTemplate<String, InventoryItem> kafkaTemplate;
 
     @PostMapping(value = "/publish")
+    @Transactional("kafkaTransactionManager")
     public void sendMessage(@RequestParam("name") String name, @RequestParam("count") int count) {
         InventoryItem item = InventoryItem.builder()
                 .id(UUID.randomUUID().toString())
@@ -36,7 +38,8 @@ public class PublishInventoryController {
                 .listingDate(new Date())
                 .build();
         log.info(String.format("Message sent to inventory -> %s", item));
-        kafkaTemplate.send(topic, item);
+        kafkaTemplate.executeInTransaction(t -> t.send(topic, item));
+//        kafkaTemplate.send(topic, item);
     }
 
     @PostMapping(value = "/publish-with-callback")

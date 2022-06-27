@@ -7,6 +7,7 @@ import org.springframework.kafka.annotation.PartitionOffset;
 import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -27,6 +28,7 @@ public class ConsumeInventoryMultiListenerService {
 
     @KafkaHandler(isDefault = true)
     @SendTo("${spring.kafka.consumer.forward-to}")
+    @Transactional("kafkaTransactionManager")
     Object listenDefault(Object object) {
         log.info("KafkaHandler-Default: {}", object);
         return object;
