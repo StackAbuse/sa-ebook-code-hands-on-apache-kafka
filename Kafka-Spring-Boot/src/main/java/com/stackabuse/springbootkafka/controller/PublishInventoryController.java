@@ -1,11 +1,13 @@
 package com.stackabuse.springbootkafka.controller;
 
+import com.github.javafaker.Faker;
 import com.stackabuse.springbootkafka.model.InventoryItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
@@ -65,5 +67,10 @@ public class PublishInventoryController {
                 log.error("Unable to send message=[" + item + "] due to error : " + ex.getMessage());
             }
         });
+    }
+
+    @Scheduled(initialDelay = 20_000, fixedDelay = 20_000)
+    public void fakeProduce() {
+        sendMessage(Faker.instance().commerce().productName(), Faker.instance().random().nextInt(1, 5));
     }
 }

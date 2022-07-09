@@ -10,6 +10,7 @@ public class Transaction {
     private final String cardNumber;
     private final String customerId;
     private final String itemPurchased;
+    private final String orderId;
     int quantity;
     double price;
     private final Date purchaseDate;
@@ -21,6 +22,7 @@ public class Transaction {
         cardNumber = builder.cardNumber;
         customerId = builder.customerId;
         itemPurchased = builder.itemPurchased;
+        orderId = builder.orderId;
         quantity = builder.quantity;
         price = builder.price;
         purchaseDate = builder.purchaseDate;
@@ -38,6 +40,7 @@ public class Transaction {
         builder.cardNumber = copy.cardNumber;
         builder.customerId = copy.customerId;
         builder.itemPurchased = copy.itemPurchased;
+        builder.orderId = copy.orderId;
         builder.quantity = copy.quantity;
         builder.price = copy.price;
         builder.purchaseDate = copy.purchaseDate;
@@ -61,6 +64,10 @@ public class Transaction {
 
     public String getItemPurchased() {
         return itemPurchased;
+    }
+
+    public String getOrderId() {
+        return orderId;
     }
 
     public int getQuantity() {
@@ -87,6 +94,7 @@ public class Transaction {
                 ", cardNumber='" + cardNumber + '\'' +
                 ", customerId='" + customerId + '\'' +
                 ", itemPurchased='" + itemPurchased + '\'' +
+                ", orderId='" + orderId + '\'' +
                 ", quantity=" + quantity +
                 ", price=" + price +
                 ", purchaseDate=" + purchaseDate +
@@ -100,6 +108,7 @@ public class Transaction {
         private String cardNumber;
         private String customerId;
         private String itemPurchased;
+        private String orderId;
         private int quantity;
         private double price;
         private Date purchaseDate;
@@ -139,6 +148,11 @@ public class Transaction {
 
         public Builder itemPurchased(String val) {
             itemPurchased = val;
+            return this;
+        }
+
+        public Builder orderId(String val) {
+            orderId = val;
             return this;
         }
 

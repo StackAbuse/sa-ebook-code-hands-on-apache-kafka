@@ -1,0 +1,19 @@
+server:
+  port: 8081
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+          autoCreateTopics: true
+      bindings:
+        order-checkout-0:
+          consumer:
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: order-checkout
+          group: order-checkout-group-0
+          concurrency: 3
+        order-warehouse-0:
+          destination: order-warehouse

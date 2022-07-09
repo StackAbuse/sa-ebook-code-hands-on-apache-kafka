@@ -37,4 +37,10 @@ public class ConsumeInventoryService {
                 partition,
                 ts);
     }
+
+    @KafkaListener(topics = "${spring.kafka.consumer.forward-to}")
+    @Transactional("kafkaTransactionManager")
+    public void listenForwarderMessage(InventoryItem item) {
+        log.info("Received Message in forwarder: {}", item);
+    }
 }

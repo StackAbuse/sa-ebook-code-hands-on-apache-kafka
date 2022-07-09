@@ -39,6 +39,7 @@ public class FakeDataProducer {
 
         Random random = new Random();
         for (int i = 0; i < number; i++) {
+            String orderId = UUID.randomUUID().toString();
             String itemPurchased = faker.commerce().productName();
             int quantity = faker.number().numberBetween(1, 5);
             double price = Double.parseDouble(faker.commerce().price(4.00, 295.00));
@@ -54,6 +55,7 @@ public class FakeDataProducer {
                     .firstName(customer.getFirstName())
                     .lastName(customer.getLastName())
                     .itemPurchased(itemPurchased)
+                    .orderId(orderId)
                     .quantity(quantity)
                     .price(price)
                     .purchaseDate(purchaseDate)

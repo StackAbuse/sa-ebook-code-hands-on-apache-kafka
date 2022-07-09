@@ -46,6 +46,16 @@ public class KafkaTopicConfig {
                        .build(),
                TopicBuilder.name("fulfillment-station")
                        .partitions(5)
+                       .build(),
+               TopicBuilder.name("order-checkout")
+                       .partitions(10)
+                       .replicas(1)
+                       .compact()
+                       .build(),
+               TopicBuilder.name("order-warehouse")
+                       .partitions(10)
+                       .replicas(1)
+                       .compact()
                        .build()
         );
     }

@@ -1,0 +1,242 @@
+server:
+  port: 8082
+spring:
+  kafka:
+    consumer:
+      properties:
+        spring.json.trusted.packages: com.stackabuse.springcloudkafkastreams.model
+  cloud:
+    function:
+      definition: publisher;consumer;inventory;singleIOBind;multiIOBranchBinding;twoInputSingleOutputBinding;multiInputsingleOutputBinding;total;totalPerProduct;latestPerProduct
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+          configuration:
+            processing.guarantee: exactly_once
+            isolation.level: read_committed
+            commit.interval.ms: 1000
+            application.id: fullfillment-station
+            transactional.id: fullfillment-station-tx
+            retries: 5
+            default:
+              key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+              value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+          consumer-properties:
+            auto.offset.reset: latest
+            allow.auto.create.topics: true
+          producer-properties:
+            acks: all
+            enable.idempotence: true
+          autoCreateTopics: true
+          autoAddPartitions: true
+        bindings:
+          producer-out-0:
+            producer:
+              configuration:
+                value.serializer: com.stackabuse.springcloudkafkastreams.serializer.OrderSerializer
+          consumer-in-0:
+            consumer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderDeserializer
+          inventory-in-0:
+            consumer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.InventoryItemDeserializer
+          singleIOBind-in-0:
+            consumer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderDeserializer
+          singleIOBind-out-0:
+            producer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderSerializer
+          multiIOBranchBinding-in-0:
+            consumer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderDeserializer
+          multiIOBranchBinding-out-0:
+            producer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderSerializer
+          multiIOBranchBinding-out-1:
+            producer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderSerializer
+          multiIOBranchBinding-out-2:
+            producer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderSerializer
+          multiIOBranchBinding-out-3:
+            producer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderSerializer
+          twoInputSingleOutputBinding-in-0:
+            consumer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderDeserializer
+          twoInputSingleOutputBinding-in-1:
+            consumer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.InventoryItemDeserializer
+          twoInputSingleOutputBinding-out-0:
+            producer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderSerializer
+          multiInputsingleOutputBinding-in-0:
+            consumer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderDeserializer
+          multiInputsingleOutputBinding-in-1:
+            consumer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.InventoryItemDeserializer
+          multiInputsingleOutputBinding-in-2:
+            consumer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.TransactionDeserializer
+          multiInputsingleOutputBinding-out-0:
+            producer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderSerializer
+          total-in-0:
+            consumer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderDeserializer
+          totalPerProduct-in-0:
+            consumer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderDeserializer
+          latestPerProduct-in-0:
+            consumer:
+              configuration:
+                value.deserializer: com.stackabuse.springcloudkafkastreams.deserializer.OrderDeserializer
+      bindings:
+        consumer-in-0:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: order-warehouse
+          group: fullfillment-group-0
+          concurrency: 3
+        inventory-in-0:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: product-inventory
+          group: fullfillment-group-inventory-check-0
+          concurrency: 3
+        producer-out-0:
+          destination: order-warehouse
+          producer:
+            useNativeEncoding: true # Enables using the custom serializer
+        singleIOBind-in-0:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: order-warehouse
+          group: singleIOBind-in-0
+          concurrency: 3
+        multiIOBranchBinding-in-0:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: order-warehouse
+          group: multiIOBranchBinding-in-0
+          concurrency: 3
+        twoInputSingleOutputBinding-in-0:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: order-warehouse
+          group: twoInputSingleOutputBinding-in-0
+          concurrency: 3
+        twoInputSingleOutputBinding-in-1:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: product-inventory
+          group: twoInputSingleOutputBinding-in-1
+          concurrency: 3
+        multiInputsingleOutputBinding-in-0:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: order-warehouse
+          group: multiInputsingleOutputBinding-in-0
+          concurrency: 3
+        multiInputsingleOutputBinding-in-1:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: product-inventory
+          group: multiInputsingleOutputBinding-in-1
+          concurrency: 3
+        multiInputsingleOutputBinding-in-2:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: transaction
+          group: multiInputsingleOutputBinding-in-2
+          concurrency: 3
+        total-in-0:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: order-warehouse
+          group: total-in-0
+          concurrency: 3
+        totalPerProduct-in-0:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: order-warehouse
+          group: totalPerProduct-in-0
+          concurrency: 3
+        latestPerProduct-in-0:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: order-warehouse
+          group: latestPerProduct-in-0
+          concurrency: 3
+        singleIOBind-out-0:
+          destination: order-warehouse
+          producer:
+            useNativeEncoding: true # Enables using the custom serializer
+        multiIOBranchBinding-out-0:
+          destination: order-warehouse
+          producer:
+            useNativeEncoding: true # Enables using the custom serializer
+        multiIOBranchBinding-out-1:
+          destination: order-warehouse
+          producer:
+            useNativeEncoding: true # Enables using the custom serializer
+        multiIOBranchBinding-out-2:
+          destination: order-warehouse
+          producer:
+            useNativeEncoding: true # Enables using the custom serializer
+        multiIOBranchBinding-out-3:
+          destination: order-warehouse
+          producer:
+            useNativeEncoding: true # Enables using the custom serializer
+        twoInputSingleOutputBinding-out-0:
+          destination: order-warehouse
+          producer:
+            useNativeEncoding: true # Enables using the custom serializer
+        multiInputsingleOutputBinding-out-0:
+          destination: order-warehouse
+          producer:
+            useNativeEncoding: true # Enables using the custom serializer
