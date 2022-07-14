@@ -19,6 +19,7 @@
         <module>Kafka-Spring-Boot</module>
         <module>Kafka-Spring-Cloud</module>
         <module>Kafka-Spring-Cloud-Streams</module>
+        <module>Kafka-Spring-Boot-Reactive</module>
     </modules>
 
 </project>

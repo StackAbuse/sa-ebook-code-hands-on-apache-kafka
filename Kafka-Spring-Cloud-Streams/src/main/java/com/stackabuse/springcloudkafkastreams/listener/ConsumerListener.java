@@ -111,14 +111,17 @@ public class ConsumerListener {
                                                 || value.getStatus() == OrderStatus.AVAILABLE)
                                         .mapValues(v -> {
                                             inventoryItem
-                                                    .filter((ki, vi) -> vi.getName().equals(v.getProductName()))
+                                                    .filter((ki, vi) ->
+                                                            vi.getName().equals(v.getProductName()))
                                                     .toStream()
                                                     .mapValues(vi -> {
                                                         transaction
-                                                                .filter((kt, vt) -> vt.getOrderId().equals(v.getId()))
+                                                                .filter((kt, vt) ->
+                                                                        vt.getOrderId().equals(v.getId()))
                                                                 .toStream()
                                                                 .mapValues(vt -> {
-                                                                    if (vi.getName().equals(v.getProductName())) {
+                                                                    if (vi.getName()
+                                                                            .equals(v.getProductName())) {
                                                                         v.setStatus(OrderStatus.PACKED);
                                                                     }
                                                                     log.info("Checking Transaction: {}", vt);
