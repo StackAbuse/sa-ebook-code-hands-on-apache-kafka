@@ -46,7 +46,8 @@ public class ReactiveConsumerService {
         // For exactly once processing of messages
 //        Map<String, Object> props = properties.buildProducerProperties();
 //        SenderOptions<Object, Object> senderOptions = SenderOptions.create(props)
-//                .producerProperty(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "courier-booking-txn");
+//                .producerProperty(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "courier-booking-txn")
+//                .producerProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
 
         return reactiveKafkaConsumerTemplate
 //                .receiveAtMostOnce()
