@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+#  jpa:
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: update
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/postgres
+#    username: postgres
+#    password: password
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+    consumer:
+      bootstrap-servers: localhost:9092
+      group: group_stock
