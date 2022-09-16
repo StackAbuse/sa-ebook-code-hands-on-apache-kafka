@@ -1,0 +1,34 @@
+{
+  "type": "record",
+  "name": "Customer",
+  "namespace": "com.stackabuse.kafka_spring_cloud_reactive_cassandra.schema",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "doc": "Id of the customer"
+    },
+    {
+      "name": "firstName",
+      "type": "string",
+      "doc": "First Name of the customer"
+    },
+    {
+      "name": "lastName",
+      "type": "string",
+      "doc": "Last Name of the customer"
+    },
+    {
+      "name": "department",
+      "type": "string",
+      "default": "IT ",
+      "doc": "Department of the customer"
+    },
+    {
+      "name": "designation",
+      "type": "string",
+      "default": "Software Engineer",
+      "doc": "Designation of the customer"
+    }
+  ]
+}

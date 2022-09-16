@@ -1,0 +1,89 @@
+{
+  "type": "record",
+  "namespace": "com.stackabuse.kafka_spring_boot_cassandra.schema",
+  "name": "Order",
+  "version": "1",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Id of the order"
+    },
+    {
+      "name": "product_name",
+      "type": "string",
+      "doc": "Name of the product"
+    },
+    {
+      "name": "product_id",
+      "type": "string",
+      "doc": "Id of the product"
+    },
+    {
+      "name": "product_type",
+      "type": "string",
+      "doc": "Type of the product"
+    },
+    {
+      "name": "product_count",
+      "type": "int",
+      "doc": "Count of Product Items"
+    },
+    {
+      "name": "listing_date",
+      "type": "string",
+      "doc": "Date when the Product is listed"
+    },
+    {
+      "name": "customer_id",
+      "type": "string",
+      "doc": "ID of the customer"
+    },
+    {
+      "name": "customer_email",
+      "type": "string",
+      "doc": "Email ID of the customer"
+    },
+    {
+      "name": "customer_name",
+      "type": "string",
+      "doc": "Name of the customer"
+    },
+    {
+      "name": "customer_mobile",
+      "type": "string",
+      "doc": "Mobile number of customer"
+    },
+    {
+      "name": "shipping_address",
+      "type": "string",
+      "doc": "Address of the customer to be shipped"
+    },
+    {
+      "name": "shipping_pincode",
+      "type": "string",
+      "doc": "Pincode to be shipped"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "doc": "Status of the order"
+    },
+    {
+      "name": "price",
+      "type": "float",
+      "doc": "Total price of the order"
+    },
+    {
+      "name": "weight",
+      "type": "float",
+      "doc": "Weight of the items"
+    },
+    {
+      "name": "automated_email",
+      "type": "boolean",
+      "default": true,
+      "doc": "Field indicating if the user is enrolled in marketing emails"
+    }
+  ]
+}

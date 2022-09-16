@@ -21,6 +21,10 @@
         <module>Kafka-Spring-Cloud-Streams</module>
         <module>Kafka-Spring-Boot-Reactive</module>
         <module>Kafka-Data-Pipeline</module>
+        <module>Kafka-Schema-Registry</module>
+        <module>Kafka-Spring-Cloud-Stream-Schema-Registry</module>
+        <module>Kafka-Spring-Boot-Cassandra</module>
+        <module>Kafka-Spring-Cloud-Reactive-Cassandra</module>
     </modules>
 
 </project>

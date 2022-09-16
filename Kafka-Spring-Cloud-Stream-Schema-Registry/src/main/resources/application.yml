@@ -1,0 +1,44 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    function:
+      definition: producer;consumer;
+    stream:
+      bindings:
+        consumer-in-0:
+          consumer:
+            use-native-decoding: true # Enables using the custom deserializer
+            max-attempts: 3
+            back-off-initial-interval: 100
+          destination: customer-details
+          content-type: application/*+avro
+          group: group-customer
+          concurrency: 3
+        producer-out-0:
+          destination: customer-details
+          content-type: application/*+avro
+          producer:
+            useNativeEncoding: true # Enables using the custom serializer
+      kafka:
+        binder:
+          brokers: localhost:9092
+          autoCreateTopics: true
+          autoAddPartitions: true
+          replication-factor: 1
+          configuration:
+            processing.guarantee: exactly_once
+            isolation.level: read_committed
+            commit.interval.ms: 1000
+          producer-properties:
+            key.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+            value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+            schema.registry.url: http://localhost:8081
+            acks: all
+            enable.idempotence: true
+          consumer-properties:
+            key.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+            value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+            schema.registry.url: http://localhost:8081
+            specific.avro.reader: true
+            allow.auto.create.topics: true

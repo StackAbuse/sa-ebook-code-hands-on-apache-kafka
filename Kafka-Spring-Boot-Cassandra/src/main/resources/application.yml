@@ -1,0 +1,34 @@
+server:
+  port: 8083
+
+spring:
+  kafka:
+    properties:
+      bootstrap.servers: localhost:9092
+      schema.registry.url: http://localhost:8081
+    consumer:
+      group-id: cassandra-group
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        specific.avro.reader: true
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+
+  data:
+    cassandra:
+      keyspace-name: stackabuse
+      contact-points:
+        - localhost
+      local-datacenter: datacenter1
+      port: 9042
+      schema-action: CREATE_IF_NOT_EXISTS
+      username: admin
+      password: password
+      connection:
+        connect-timeout: 60000ms
+        read-timeout: 60000ms
+      pool:
+        pool-timeout: 60000ms
