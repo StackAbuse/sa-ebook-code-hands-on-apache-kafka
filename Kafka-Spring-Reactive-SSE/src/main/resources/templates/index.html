@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="layouts :: header"></head>
+
+    <style>
+        .navbar(
+            min-height: 80px;
+        )
+        .navbar-brand(
+            margin: auto;
+            font-size: 2.6rem;
+        )
+        .panel(
+            padding-top: 20px;
+            padding-bottom: 20px;
+        )
+        h3(
+            color: yellow;
+        )
+        .pstyle(
+            font-size: 5rem;
+            font-family: verdana, sans-serif;
+        )
+    </style>
+    <body class="bg-dark mb-4">
+        <div th:style = "'color:white'">
+            <h3 style="text-align:center">Welcome to the News Feed App !!</h3>
+            <p style="text-align:center">Displaying the latest news as its published !</p>
+        </div>
+        <div th:style = "'color:white'" class = "container pstyle text-center" id = "pack">
+            <div class="panel panel-primary">
+                News Timeline
+            </div>
+        </div>
+
+        <script type="text/javascript" src="/webjars/jquery/3.5.0/jquery.js"></script>
+        <script type="text/javascript"
+                src="/webjars/jquery/3.5.0/jquery.min.js"></script>
+        <script type="text/javascript"
+                src="/webjars/jQuery-Autocomplete/1.4.10/jquery.autocomplete.js"></script>
+        <script type="text/javascript"
+                src="/webjars/jQuery-Autocomplete/1.4.10/jquery.autocomplete.min.js"></script>
+        <script type="text/javascript" src="/js/main.js"></script>
+    </body>
+
+</html>

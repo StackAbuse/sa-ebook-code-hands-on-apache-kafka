@@ -1,0 +1,27 @@
+spring:
+  kafka:
+    bootstrap-servers: 10.204.133.84:9092
+    producer:
+      topic: news-feed
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      topic: news-feed
+      group-id: reactive-kafka
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            use:
+              type:
+                headers: false
+            value:
+              default:
+                type: com.stackabuse.kafka_spring_reactive_sse.model.Article
+    properties:
+      spring:
+        json:
+          trusted:
+            packages: com.stackabuse.kafka_spring_reactive_sse.model

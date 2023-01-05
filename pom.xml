@@ -25,6 +25,7 @@
         <module>Kafka-Spring-Cloud-Stream-Schema-Registry</module>
         <module>Kafka-Spring-Boot-Cassandra</module>
         <module>Kafka-Spring-Cloud-Reactive-Cassandra</module>
+        <module>Kafka-Spring-Reactive-SSE</module>
     </modules>
 
 </project>
