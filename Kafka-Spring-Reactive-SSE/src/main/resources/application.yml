@@ -1,6 +1,6 @@
 spring:
   kafka:
-    bootstrap-servers: 10.204.133.84:9092
+    bootstrap-servers: localhost:9092
     producer:
       topic: news-feed
       key-serializer: org.apache.kafka.common.serialization.StringSerializer

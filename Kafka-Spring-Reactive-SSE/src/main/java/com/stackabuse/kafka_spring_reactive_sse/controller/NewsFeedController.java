@@ -3,7 +3,6 @@ package com.stackabuse.kafka_spring_reactive_sse.controller;
 import com.stackabuse.kafka_spring_reactive_sse.model.Article;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate;
