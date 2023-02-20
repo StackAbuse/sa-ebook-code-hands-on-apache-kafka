@@ -21,7 +21,7 @@ public class OrderPublisher {
     @Autowired
     private StreamBridge streamBridge;
 
-    @Scheduled(cron = "*/20 * * * * *")
+    @Scheduled(cron = "*/10 * * * * *")
     public void sendOrder(){
         streamBridge.send("producer-out-0", MessageBuilder
                 .withPayload(Order.builder()

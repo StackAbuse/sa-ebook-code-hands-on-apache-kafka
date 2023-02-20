@@ -1,0 +1,123 @@
+version: "3.0"
+
+services:
+  # elasticsearch nodes - search and analytics engine
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION}
+    environment:
+      - node.name=elasticsearch
+      - cluster.name=${CLUSTER_NAME}
+      - "discovery.type=single-node"
+      - xpack.security.enabled=true
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - elk-network
+    ports:
+      - 9200:9200
+
+  # kibana - data visualization and exploration tool
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:${ELK_VERSION}
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - xpack.security.enabled=true
+      - ELASTICSEARCH_USERNAME=${ELASTIC_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+    networks:
+      - elk-network
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
+
+  # metricbeat - service metrics data shipper
+  metricbeat:
+    container_name: metricbeat
+    image: docker.elastic.co/beats/metricbeat:${ELK_VERSION}
+    #restart: always
+    user: root
+    environment:
+      - ELASTICSEARCH_HOSTS=http://localhost:9200
+      - ELASTICSEARCH_USERNAME=${ELASTIC_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+      - KIBANA_HOST=http://localhost:5601
+    volumes:
+      - metricbeat-data:/usr/share/metricbeat/data
+      - ./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /:/hostfs:ro
+    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+    networks:
+      - elk-network
+    depends_on:
+      - elasticsearch
+      - kibana
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - 2181:2181
+    volumes:
+      - ./volume/zookeeper/:/var/run/docker.sock
+
+  kafka:
+    build: .
+    image: kafka-jolokia
+    links:
+      - zookeeper
+    ports:
+      - 9092:9092
+      - 8778:8778
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: OUTSIDE://:9092,INSIDE://:9192
+      KAFKA_ADVERTISED_LISTENERS: OUTSIDE://localhost:9092,INSIDE://kafka:9192
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: OUTSIDE:PLAINTEXT,INSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OPTS: -javaagent:/usr/app/jolokia-jvm.jar=port=8778,host=0.0.0.0
+    volumes:
+      - ./volume/kafka/:/var/run/docker.sock
+
+  akhq:
+    image: tchiotludo/akhq:0.20.0
+    container_name: akhq
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            docker-kafka-server:
+              properties:
+                bootstrap.servers: "kafka:9092"
+                #schema-registry:
+                # url: "http://kafka-schema-registry:8081"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kafka
+
+volumes:
+  elasticsearch-data:
+    driver: local
+  metricbeat-data:
+    driver: local
+  zookeeper-data:
+    driver: local
+  kafka-data:
+    driver: local
+
+networks:
+  elk-network:
+    driver: bridge
